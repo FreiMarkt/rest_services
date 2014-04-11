@@ -120,6 +120,9 @@ public class PassiveMemberDAO extends AbstractDAO<PassiveMember> {
 		try {
 			while (results.next()) {
 				PassiveMember pm = PassiveMember.getInstance();
+				pm.setMemberID(results.getString(1)); // by column id
+				pm.setUserName(results.getString("username")); // by column name
+				// TODO: for all the fields
 				passiveMembers.add(pm);
 			}
 		} catch (Exception e) {

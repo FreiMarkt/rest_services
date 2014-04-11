@@ -42,6 +42,9 @@ public class PassiveMember implements IItem {
 	private Date birthday;
 	private int roleId;
 	
+	public void setUserName(String userName) {
+		this.username = userName;
+	}
 	/**
 	 * Private constructor
 	 */
@@ -60,6 +63,18 @@ public class PassiveMember implements IItem {
 	 * string representation of the object
 	 */
 	public String toString() {
-		return "passive member";
+		return this.memberID + "  " + this.username;
+	}
+	/**
+	 * @return the memberID
+	 */
+	public String getMemberID() {
+		return memberID;
+	}
+	/**
+	 * @param memberID the memberID to set
+	 */
+	public void setMemberID(String memberID) {
+		this.memberID = memberID;
 	}
 }

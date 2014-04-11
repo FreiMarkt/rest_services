@@ -41,7 +41,7 @@ public class No {
 	@Produces(MediaType.TEXT_HTML)
 	public String sayHtmlHello() {
 		StringBuilder body = new StringBuilder();
-		body.append("<h1>List of passive members:</b1>");
+		body.append("<h1>List of passive members:</h1></br>");
 		
 		// get DAO that is needed that implements IDAO interface
 		IDAO<PassiveMember> passiveMemberDAO = DAOFactory.createPassiveMemberDAO();
@@ -51,7 +51,7 @@ public class No {
 		for (PassiveMember passiveMember : passiveMembers) {
 			body.append("<p>")
 			.append(passiveMember.toString())
-			.append("</p>");
+			.append("</p></br>");
 		}
 		
 		return "<html> " + "<title>" + "Hello Jersey" + "</title>"
