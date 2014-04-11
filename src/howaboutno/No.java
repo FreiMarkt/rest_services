@@ -9,8 +9,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import dao.DAOFactory;
+
 import dao.IDAO;
+import dao.DAOFactory;
+
 
 /**
  * This class serves as a prototype.
@@ -51,7 +53,7 @@ public class No {
 		for (PassiveMember passiveMember : passiveMembers) {
 			body.append("<p>")
 			.append(passiveMember.toString())
-			.append("</p></br>");
+			.append("</p><br>");
 		}
 		
 		return "<html> " + "<title>" + "Hello Jersey" + "</title>"
