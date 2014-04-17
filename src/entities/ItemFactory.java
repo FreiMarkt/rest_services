@@ -1,4 +1,4 @@
-package items;
+package entities;
 
 /**
  * Factory class.
@@ -8,6 +8,6 @@ package items;
 public class ItemFactory {
 
 	public static IItem createUser() {
-		return PassiveMember.getInstance();
+		return Member.getInstance();
 	}
 }

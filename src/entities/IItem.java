@@ -1,4 +1,4 @@
-package items;
+package entities;
 
 /**
  * Interface for object that are going to be used in TimeBank 
