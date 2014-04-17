@@ -41,6 +41,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see dao.IDAO#delete(java.lang.Object)
@@ -56,7 +57,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	public List<Member> loadAll() {
-		// SQL statement which selects everything from passivemember table
+		// SQL statement which selects everything from member table
 		String sql = "SELECT memberid, firstname, lastname, username,"
 				+ " ppassword, age, gender, address, city, country, email,"
 				+ " phonenumber, paymentstatus, fiftyfivemember,"
@@ -76,18 +77,19 @@ public class MemberDAO extends AbstractDAO<Member> {
 	@Override
 	List<Member> createResultList(ResultSet results) {
 		// initialize list of passive members with an empty array list
-		List<Member> passiveMembers = new ArrayList<Member>();
+		List<Member> members = new ArrayList<Member>();
 		
 		// iterate through result set and create a PassiveMember object
 		// out of every result set entry
 		try {
 			while (results.next()) {
 				Member member = Member.getInstance();
+				
 				member.setMemberID(results.getString("memberid")); 
 				member.setFirstname(results.getString("firstname"));
 				member.setLastname(results.getString("lastname"));
 				member.setUserName(results.getString("username"));
-				member.setPpassword(results.getString("ppasword"));
+				member.setPpassword(results.getString("ppassword"));
 				member.setAge(results.getInt("age"));
 				member.setGender(results.getBoolean("gender"));
 				member.setAddress(results.getString("address"));
@@ -101,13 +103,13 @@ public class MemberDAO extends AbstractDAO<Member> {
 				member.setBirthday(results.getDate("birthday"));
 				member.setRoleId(results.getInt("roleid"));
 				
-				passiveMembers.add(member);
+				members.add(member);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return passiveMembers;
+		return members;
 	}
 	
 
@@ -126,6 +128,15 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	String prepareSaveQuery(Member object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see dao.AbstractDAO#executeSaveQuery(java.lang.String)
+	 */
+	@Override
+	Boolean executeSaveQuery(String saveQuery) {
 		// TODO Auto-generated method stub
 		return null;
 	}

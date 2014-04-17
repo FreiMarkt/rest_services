@@ -38,10 +38,17 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 		// prepare save query string
 		String saveQuery = prepareSaveQuery(object);
 		// execute query
+		Boolean isSaved = executeSaveQuery(saveQuery);
 		//return result status
-		return false;
+		return isSaved;
 	}
 	
+	/**
+	 * @param saveQuery
+	 * @return
+	 */
+	abstract Boolean executeSaveQuery(String saveQuery);
+
 	/**
 	 * @param object
 	 * @return
@@ -54,7 +61,7 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 	 * @param statement
 	 * @return
 	 */
-	List<T> executeloadAll(String query) {
+	List<T> executeLoadAll(String query) {
 		List<T> resultList = null;
 		try {
 			// prepare statement object

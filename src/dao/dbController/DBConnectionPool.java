@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.postgresql.Driver;
-
 /**
  * This class acts as a DB connection pool.
  * Connection pool is preferred solution to creating connection on demand
