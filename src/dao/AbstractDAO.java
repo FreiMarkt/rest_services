@@ -1,7 +1,9 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,18 +40,42 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 		// prepare save query string
 		String saveQuery = prepareSaveQuery(object);
 		// execute query
-		Boolean isSaved = executeSaveQuery(saveQuery);
+		Boolean isSaved = executeSaveQuery(saveQuery, object);
 		//return result status
 		return isSaved;
 	}
 	
 	/**
 	 * @param saveQuery
+	 * @param object
 	 * @return
 	 */
-	abstract Boolean executeSaveQuery(String saveQuery);
+	Boolean executeSaveQuery(String saveQuery, T object){
+		try {
+			Connection connection = getDBConnection();
+			PreparedStatement statement = 
+					connection.prepareStatement(saveQuery);
+			setValues(connection, statement, object);
+			statement.executeUpdate();
+			
+			statement.close();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Boolean.TRUE;
+	}
 
 	/**
+	 * @param statement
+	 * @param object
+	 * @throws SQLException 
+	 */
+	abstract void setValues(Connection connection, 
+			PreparedStatement statement, T object) throws SQLException;
+
+	/**
+	 * Gets a return SQL statement which for every entity is different,
 	 * @param object
 	 * @return
 	 */

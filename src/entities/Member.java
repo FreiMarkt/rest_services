@@ -53,8 +53,12 @@ public class Member implements IItem {
 	private Date birthday;
 	private int roleId;
 	
-	public void setUserName(String userName) {
+	public void setUsername(String userName) {
 		this.username = userName;
+	}
+	
+	public String getUsername() {
+		return this.username;
 	}
 	/**
 	 * Private constructor

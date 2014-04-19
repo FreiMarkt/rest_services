@@ -2,7 +2,9 @@ package it.unibz.inf.freimarkt;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -28,5 +30,14 @@ public class MemberService {
 		return Response.status(200).entity(members).build();
 	}
 	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/save")
+	public Response saveMember(Member m) {	
+		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
+		memberDAO.save(m);
+		return Response.status(200).entity(m).build();
+	}
 
 }

@@ -1,6 +1,9 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +18,19 @@ import entities.Member;
  */
 public class MemberDAO extends AbstractDAO<Member> {
 
+	private final String SELECT_ALL_COLUMNS = 
+			"SELECT memberid, firstname, lastname, username,"
+			+ " ppassword, age, gender, address, city, country, email,"
+			+ " phonenumber, paymentstatus, fiftyfivemember,"
+			+ " postalcode, birthday, roleid FROM member;";
+	
+	private final String INSERT_TO_ALL =
+			"INSERT INTO member(memberid, firstname, lastname, username, "
+			+ "ppassword, age, gender, address, city, country, email, "
+			+ "phonenumber, paymentstatus, fiftyfivemember, postalcode, "
+			+ "birthday, roleid) "
+			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			
 	/**
 	 * Inherited constructor.
 	 * @param dbConnectionPool
@@ -30,8 +46,6 @@ public class MemberDAO extends AbstractDAO<Member> {
 			IDBConnectionPool dbConnectionPool) {
 		return new MemberDAO(dbConnectionPool);
 	}
-
-	
 
 	/* (non-Javadoc)
 	 * @see dao.IDAO#update(java.lang.Object)
@@ -57,18 +71,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	public List<Member> loadAll() {
-		// SQL statement which selects everything from member table
-		String sql = "SELECT memberid, firstname, lastname, username,"
-				+ " ppassword, age, gender, address, city, country, email,"
-				+ " phonenumber, paymentstatus, fiftyfivemember,"
-				+ " postalcode, birthday, roleid FROM member;";
-		
-		// initialize list of passive members
-		List<Member> listOfPassiveMembers = 
-				executeLoadAll(sql);
-		
-		// return the list
-		return listOfPassiveMembers;
+		return executeLoadAll(SELECT_ALL_COLUMNS);
 	}
 
 	/* (non-Javadoc)
@@ -88,7 +91,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 				member.setMemberID(results.getString("memberid")); 
 				member.setFirstname(results.getString("firstname"));
 				member.setLastname(results.getString("lastname"));
-				member.setUserName(results.getString("username"));
+				member.setUsername(results.getString("username"));
 				member.setPpassword(results.getString("ppassword"));
 				member.setAge(results.getInt("age"));
 				member.setGender(results.getBoolean("gender"));
@@ -128,17 +131,32 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	String prepareSaveQuery(Member object) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.INSERT_TO_ALL;
 	}
+
 
 	/* (non-Javadoc)
-	 * @see dao.AbstractDAO#executeSaveQuery(java.lang.String)
+	 * @see dao.AbstractDAO#setValues(java.sql.PreparedStatement, java.lang.Object)
 	 */
 	@Override
-	Boolean executeSaveQuery(String saveQuery) {
-		// TODO Auto-generated method stub
-		return null;
+	void setValues(Connection connection, PreparedStatement statement, 
+			Member member) throws SQLException {
+		statement.setArray(1, connection.createArrayOf("varchar", new String[]{member.getMemberID()}));
+		statement.setArray(2, connection.createArrayOf("varchar", new String[]{member.getFirstname()}));
+		statement.setArray(3, connection.createArrayOf("varchar", new String[]{member.getLastname()}));
+		statement.setArray(4, connection.createArrayOf("varchar", new String[]{member.getUsername()}));
+		statement.setArray(5, connection.createArrayOf("varchar", new String[]{member.getPpassword()}));
+		statement.setInt(6, member.getAge());
+		statement.setBoolean(7, member.isGender());
+		statement.setString(8, member.getAddress());
+		statement.setArray(9, connection.createArrayOf("varchar", new String[]{member.getCity()}));
+		statement.setArray(10, connection.createArrayOf("varchar", new String[]{member.getCountry()}));
+		statement.setArray(11, connection.createArrayOf("varchar", new String[]{member.getEmail()}));
+		statement.setArray(12, connection.createArrayOf("varchar", new String[]{member.getPhonenumber()}));
+		statement.setBoolean(13, member.isPaymentStatus());
+		statement.setBoolean(14, member.isFiftyfivemember());
+		statement.setArray(15, connection.createArrayOf("varchar", new String[]{member.getPostalcode()}));
+		statement.setDate(16, member.getBirthday());
+		statement.setInt(17, member.getRoleId());
 	}
-
 }
