@@ -32,6 +32,60 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 		return this.mDBConnectionPool.getConnection();
 	}
 	
+	/**
+	 * Given an id String (every implementation must know what is the id
+	 *  and how to use it) return object T.
+	 */
+	@Override
+	public T getById(String id) {
+		String sqlWhere = getWhereQuery(id);
+		T object = executeGetById(sqlWhere, id);
+		return object;
+	}
+	
+	/**
+	 * @param sqlWhere
+	 * @param id
+	 * @return
+	 */
+	private T executeGetById(String sqlWhere, String id) {
+		T result = null;
+		try {
+			Connection connection = getDBConnection();
+			PreparedStatement statement = 
+					connection.prepareStatement(sqlWhere);
+			statement.setString(1, id);
+			
+			ResultSet results = statement.executeQuery();
+			List<T> objects = createResultList(results);
+					
+			if (objects.isEmpty()) {
+				result = getDefaultObject();
+			} else {
+				result = objects.get(0);
+			}
+			
+			results.close();
+			statement.close();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	/**
+	 * @return
+	 */
+	abstract T getDefaultObject();
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	abstract String getWhereQuery(String id);
+
 	/* (non-Javadoc)
 	 * @see dao.IDAO#save(java.lang.Object)
 	 */
