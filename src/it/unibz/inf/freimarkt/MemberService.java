@@ -57,9 +57,43 @@ public class MemberService {
 		
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
 		Member member = memberDAO.getById(email);
-
 		
 		return Response.status(200).entity(member).build();
+	}
+	
+	/**
+	 * This service updates email of the member.
+	 * 
+	 * Input should a JSON object that has two properties: email and id.
+	 * 
+	 * Return is the JSON object of the member
+	 * 
+	 * @param input
+	 * @return
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/updateEmail")
+	public Response updateEmail(JSONObject input) {
+		String id = "";
+		String email = "";
+		try {
+			id = input.getString("memberid");
+			email = input.getString("email");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// prepare the object to send DAO update method
+		Member tempMember = Member.getInstance();
+		tempMember.setMemberID(id);
+		tempMember.setEmail(email);
+		
+		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
+		Boolean result = memberDAO.update(tempMember);
+		
+		return Response.status(200).entity(result).build();
 	}
 
 }
