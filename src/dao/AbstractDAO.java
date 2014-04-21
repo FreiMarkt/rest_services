@@ -32,6 +32,57 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 		return this.mDBConnectionPool.getConnection();
 	}
 	
+	/* (non-Javadoc)
+	 * @see dao.IDAO#update(java.lang.Object)
+	 */
+	@Override
+	public boolean update(T object) {
+		String sqlUpdate = getUpdateQuery(object);
+		Integer rowsUpdated = executeUpdate(sqlUpdate, object);
+		if (0 == rowsUpdated) {
+			return Boolean.FALSE;
+		}
+		return Boolean.TRUE;
+	}
+	
+	
+	/**
+	 * @param sqlUpdate
+	 * @return
+	 */
+	private Integer executeUpdate(String sqlUpdate, T object) {
+		Integer rowsUpdated = 0;
+		try {
+			Connection connection = getDBConnection();
+			PreparedStatement statement = 
+					connection.prepareStatement(sqlUpdate);
+			setUpdateValues(connection, statement, object);
+			rowsUpdated = statement.executeUpdate();
+			
+			statement.close();
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rowsUpdated;
+	}
+
+	/**
+	 * This method set values for the query
+	 * @param connection
+	 * @param statement
+	 * @param object
+	 * @throws SQLException 
+	 */
+	abstract void setUpdateValues(Connection connection,
+			PreparedStatement statement, T object) throws SQLException;
+
+	/**
+	 * @param object
+	 * @return
+	 */
+	abstract String getUpdateQuery(T object);
+
 	/**
 	 * Given an id String (every implementation must know what is the id
 	 *  and how to use it) return object T.

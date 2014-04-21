@@ -36,6 +36,8 @@ public class MemberDAO extends AbstractDAO<Member> {
 			+ " phonenumber, paymentstatus, fiftyfivemember,"
 			+ " postalcode, birthday, roleid FROM member WHERE email[1]=?;";
 	
+	private final String UPDATE_EMAIL = "UPDATE member SET email=? WHERE memberid=?;";
+	
 	private final String DELETE_MEMBER_BY_ID = 
 			"delete from member where memberid[1]=?;";
 			
@@ -53,15 +55,6 @@ public class MemberDAO extends AbstractDAO<Member> {
 	public static MemberDAO getInstance(
 			IDBConnectionPool dbConnectionPool) {
 		return new MemberDAO(dbConnectionPool);
-	}
-
-	/* (non-Javadoc)
-	 * @see dao.IDAO#update(java.lang.Object)
-	 */
-	@Override
-	public boolean update(Member object) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 
@@ -171,5 +164,24 @@ public class MemberDAO extends AbstractDAO<Member> {
 	@Override
 	Member getDefaultObject() {
 		return Member.getInstance();
+	}
+
+	/* (non-Javadoc)
+	 * @see dao.AbstractDAO#getUpdateQuery(java.lang.Object)
+	 */
+	@Override
+	String getUpdateQuery(Member object) {
+		return UPDATE_EMAIL;
+	}
+
+	/* (non-Javadoc)
+	 * @see dao.AbstractDAO#setUpdateValues(java.sql.Connection, java.sql.PreparedStatement, java.lang.Object)
+	 */
+	@Override
+	void setUpdateValues(Connection connection, PreparedStatement statement,
+			Member member) throws SQLException {
+		// TODO (Dainius): this is just a one pair of possible updates
+		statement.setArray(1, connection.createArrayOf("varchar", new String[]{member.getEmail()}));
+		statement.setArray(2, connection.createArrayOf("varchar", new String[]{member.getMemberID()}));		
 	}
 }
