@@ -1,4 +1,6 @@
-package dao;
+package it.unibz.inf.freimarkt.dao;
+
+import it.unibz.inf.freimarkt.dao.dbController.IDBConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import dao.dbController.IDBConnectionPool;
 
 /**
  * This abstract class implements common functionality for the IDAO 

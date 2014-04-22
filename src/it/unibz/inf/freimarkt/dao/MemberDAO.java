@@ -1,4 +1,7 @@
-package dao;
+package it.unibz.inf.freimarkt.dao;
+
+import it.unibz.inf.freimarkt.dao.dbController.IDBConnectionPool;
+import it.unibz.inf.freimarkt.entities.Member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,9 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import dao.dbController.IDBConnectionPool;
-import entities.Member;
 
 /**
  * Controller to deal with PassiveMember objects.

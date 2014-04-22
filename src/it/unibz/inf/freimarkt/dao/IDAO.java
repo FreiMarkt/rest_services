@@ -1,4 +1,4 @@
-package dao;
+package it.unibz.inf.freimarkt.dao;
 
 import java.util.List;
 

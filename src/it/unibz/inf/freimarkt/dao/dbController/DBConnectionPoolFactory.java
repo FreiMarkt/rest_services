@@ -1,4 +1,4 @@
-package dao.dbController;
+package it.unibz.inf.freimarkt.dao.dbController;
 
 /**
  * Factory class for IDBConnectionPool implementations.

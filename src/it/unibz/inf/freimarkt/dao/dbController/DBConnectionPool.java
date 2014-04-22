@@ -1,4 +1,4 @@
-package dao.dbController;
+package it.unibz.inf.freimarkt.dao.dbController;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package entities;
+package it.unibz.inf.freimarkt.entities;
 
 /**
  * This enum stores names of the columns of the MEMBER table.
