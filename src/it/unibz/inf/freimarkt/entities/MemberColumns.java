@@ -68,7 +68,7 @@ public enum MemberColumns {
 	/**
 	 * @param columnName the data to set
 	 */
-	public void setData(String columnName) {
+	public void setColumnName(String columnName) {
 		this.columnName = columnName;
 	}
 }

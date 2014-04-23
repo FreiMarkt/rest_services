@@ -52,7 +52,7 @@ public class MemberServiceTest {
 		        .resource(url);
 		
 		JSONObject inputJsonObj = new JSONObject();
-		inputJsonObj.put("email", "me@company.com");
+		inputJsonObj.put("email", "super@company.com");
 		
 		ClientResponse response = 
 				webResource

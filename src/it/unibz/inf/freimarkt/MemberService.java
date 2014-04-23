@@ -3,7 +3,9 @@ package it.unibz.inf.freimarkt;
 import it.unibz.inf.freimarkt.dao.DAOFactory;
 import it.unibz.inf.freimarkt.dao.IDAO;
 import it.unibz.inf.freimarkt.entities.Member;
+import it.unibz.inf.freimarkt.entities.MemberColumns;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -50,7 +52,7 @@ public class MemberService {
 	public Response getIdByEmail(JSONObject input) {
 		String email = "";
 		try {
-			email = input.getString("email");
+			email = input.getString(MemberColumns.EMAIL.getColumnName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,8 +81,8 @@ public class MemberService {
 		String id = "";
 		String email = "";
 		try {
-			id = input.getString("memberid");
-			email = input.getString("email");
+			id = input.getString(MemberColumns.ID.getColumnName());
+			email = input.getString(MemberColumns.EMAIL.getColumnName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,7 +98,8 @@ public class MemberService {
 		return Response.status(200).entity(result).build();
 	}
 	/**
-	 * 
+	 * This service updates MEMBER entry.
+	 * JSON input can contain many fields that are going to be updated
 	 * @param input
 	 * @return
 	 */
@@ -105,11 +108,18 @@ public class MemberService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/updateMember")
 	public Response updateMember(JSONObject input) {
+		List<MemberColumns> columnsToUpdate = new ArrayList<MemberColumns>();
 		String id = "";
 		String email = "";
 		try {
-			id = input.getString("memberid");
-			email = input.getString("email");
+			for (MemberColumns column : MemberColumns.values()) {
+				if (input.has(column.getColumnName())) {
+					columnsToUpdate.add(column);
+				}
+			}
+			
+			id = input.getString(MemberColumns.ID.getColumnName());
+			email = input.getString(MemberColumns.EMAIL.getColumnName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
