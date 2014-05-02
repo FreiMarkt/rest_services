@@ -1,8 +1,8 @@
-package dao;
+package it.unibz.inf.freimarkt.dao;
 
-import dao.dbController.DBConnectionPoolFactory;
-import dao.dbController.IDBConnectionPool;
-import entities.Member;
+import it.unibz.inf.freimarkt.dao.dbController.DBConnectionPoolFactory;
+import it.unibz.inf.freimarkt.dao.dbController.IDBConnectionPool;
+import it.unibz.inf.freimarkt.entities.Member;
 
 /**
  * Factory class that knows how to create IDAO implementation objects.

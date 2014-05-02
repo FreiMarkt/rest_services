@@ -1,4 +1,7 @@
-package dao;
+package it.unibz.inf.freimarkt.dao;
+
+import it.unibz.inf.freimarkt.dao.dbController.IDBConnectionPool;
+import it.unibz.inf.freimarkt.entities.Member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,10 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import dao.dbController.IDBConnectionPool;
-import entities.Member;
 
 /**
  * Controller to deal with PassiveMember objects.
@@ -30,6 +29,17 @@ public class MemberDAO extends AbstractDAO<Member> {
 			+ "phonenumber, paymentstatus, fiftyfivemember, postalcode, "
 			+ "birthday, roleid) "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	
+	private final String GET_MEMBER_BY_EMAIL =
+			"SELECT memberid, firstname, lastname, username,"
+			+ " ppassword, age, gender, address, city, country, email,"
+			+ " phonenumber, paymentstatus, fiftyfivemember,"
+			+ " postalcode, birthday, roleid FROM member WHERE email[1]=?;";
+	
+	private final String UPDATE_EMAIL = "UPDATE member SET email=? WHERE memberid=?;";
+	
+	private final String DELETE_MEMBER_BY_ID = 
+			"delete from member where memberid[1]=?;";
 			
 	/**
 	 * Inherited constructor.
@@ -45,15 +55,6 @@ public class MemberDAO extends AbstractDAO<Member> {
 	public static MemberDAO getInstance(
 			IDBConnectionPool dbConnectionPool) {
 		return new MemberDAO(dbConnectionPool);
-	}
-
-	/* (non-Javadoc)
-	 * @see dao.IDAO#update(java.lang.Object)
-	 */
-	@Override
-	public boolean update(Member object) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 
@@ -114,17 +115,6 @@ public class MemberDAO extends AbstractDAO<Member> {
 		}
 		return members;
 	}
-	
-
-	/* (non-Javadoc)
-	 * @see dao.IDAO#getById(java.util.UUID)
-	 */
-	@Override
-	public Member getById(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	/* (non-Javadoc)
 	 * @see dao.AbstractDAO#prepareSaveQuery(java.lang.Object)
@@ -158,5 +148,40 @@ public class MemberDAO extends AbstractDAO<Member> {
 		statement.setArray(15, connection.createArrayOf("varchar", new String[]{member.getPostalcode()}));
 		statement.setDate(16, member.getBirthday());
 		statement.setInt(17, member.getRoleId());
+	}
+
+	/* (non-Javadoc)
+	 * @see dao.AbstractDAO#getWhereQuery(java.lang.String)
+	 */
+	@Override
+	String getWhereQuery(String id) {
+		return this.GET_MEMBER_BY_EMAIL;
+	}
+
+	/* (non-Javadoc)
+	 * @see dao.AbstractDAO#getDefaultObject()
+	 */
+	@Override
+	Member getDefaultObject() {
+		return Member.getInstance();
+	}
+
+	/* (non-Javadoc)
+	 * @see dao.AbstractDAO#getUpdateQuery(java.lang.Object)
+	 */
+	@Override
+	String getUpdateQuery(Member object) {
+		return UPDATE_EMAIL;
+	}
+
+	/* (non-Javadoc)
+	 * @see dao.AbstractDAO#setUpdateValues(java.sql.Connection, java.sql.PreparedStatement, java.lang.Object)
+	 */
+	@Override
+	void setUpdateValues(Connection connection, PreparedStatement statement,
+			Member member) throws SQLException {
+		// TODO (Dainius): this is just a one pair of possible updates
+		statement.setArray(1, connection.createArrayOf("varchar", new String[]{member.getEmail()}));
+		statement.setArray(2, connection.createArrayOf("varchar", new String[]{member.getMemberID()}));		
 	}
 }

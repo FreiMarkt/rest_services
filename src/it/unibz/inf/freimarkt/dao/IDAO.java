@@ -1,7 +1,6 @@
-package dao;
+package it.unibz.inf.freimarkt.dao;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * This is the main interface for the data persistence layer.
@@ -49,6 +48,6 @@ public interface IDAO<T> {
 	 * @param id
 	 * @return
 	 */
-	T getById(UUID id);
+	T getById(String id);
 	
 }

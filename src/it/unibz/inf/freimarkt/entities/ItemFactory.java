@@ -1,4 +1,4 @@
-package entities;
+package it.unibz.inf.freimarkt.entities;
 
 /**
  * Factory class.

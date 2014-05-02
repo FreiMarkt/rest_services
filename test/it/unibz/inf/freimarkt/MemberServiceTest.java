@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.junit.Test;
 
 import com.sun.jersey.api.client.Client;
@@ -37,10 +38,63 @@ public class MemberServiceTest {
 		    throw new RuntimeException("Failed : HTTP error code : "
 		            + response.getStatus());
 		}
-		String output = response.getEntity(String.class);
 
 	}
 	
+	@Test
+	public void testSelectByEmail001() throws JSONException, ClientProtocolException, IOException {
+		String url = "http://localhost:8080/howaboutno/moo/member/getByEmail";
+		
+		ClientConfig clientConfig = new DefaultClientConfig();
+		
+		Client client = Client.create(clientConfig);
+		WebResource webResource = client
+		        .resource(url);
+		
+		JSONObject inputJsonObj = new JSONObject();
+		inputJsonObj.put("email", "super@company.com");
+		
+		ClientResponse response = 
+				webResource
+				.accept("application/json")
+		        .type("application/json")
+		        .post(ClientResponse.class, inputJsonObj);
+		
+		if (response.getStatus() != 200) {
+		    throw new RuntimeException("Failed : HTTP error code : "
+		            + response.getStatus());
+		}
+		String output = response.getEntity(String.class);
+		System.out.println(output);
+	}
+	
+	@Test
+	public void testUpdateEmail002() throws JSONException, ClientProtocolException, IOException {
+		String url = "http://localhost:8080/howaboutno/moo/member/updateEmail";
+		
+		ClientConfig clientConfig = new DefaultClientConfig();
+		
+		Client client = Client.create(clientConfig);
+		WebResource webResource = client
+		        .resource(url);
+		
+		JSONObject inputJsonObj = new JSONObject();
+		inputJsonObj.put("memberid", "123");
+		inputJsonObj.put("email", "super@company.com");
+		
+		ClientResponse response = 
+				webResource
+				.accept("application/json")
+		        .type("application/json")
+		        .post(ClientResponse.class, inputJsonObj);
+		
+		if (response.getStatus() != 200) {
+		    throw new RuntimeException("Failed : HTTP error code : "
+		            + response.getStatus());
+		}
+		String output = response.getEntity(String.class);
+		System.out.println(output);
+	}
 	
 	
 

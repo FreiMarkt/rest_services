@@ -1,4 +1,4 @@
-package entities;
+package it.unibz.inf.freimarkt.entities;
 
 /**
  * Interface for object that are going to be used in TimeBank 
