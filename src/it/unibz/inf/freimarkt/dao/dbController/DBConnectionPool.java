@@ -44,7 +44,6 @@ public class DBConnectionPool implements IDBConnectionPool{
 	/* (non-Javadoc)
 	 * @see dao.dbController.IDBConnectionPool#getConnection()
 	 */
-	@Override
 	public Connection getConnection() {
 		// create new connection
 		Connection newConnection = createConnection();
@@ -65,7 +64,7 @@ public class DBConnectionPool implements IDBConnectionPool{
 			// parent class knows how to do it
 			connection = DriverManager.getConnection(
 							// this should be somehow parameterized
-							"jdbc:postgresql://46.18.25.110:5432/TimeBankDB", 
+							"jdbc:postgresql://192.168.1.66:5432/timebankdb", 
 							"postgres", // username
 							"postgres"); // password
 		} catch (SQLException e) {

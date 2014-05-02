@@ -1,6 +1,7 @@
 package it.unibz.inf.freimarkt.dao;
 
 import it.unibz.inf.freimarkt.dao.dbController.IDBConnectionPool;
+import it.unibz.inf.freimarkt.entities.Member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This abstract class implements common functionality for the IDAO 
@@ -32,155 +34,139 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 		return this.mDBConnectionPool.getConnection();
 	}
 	
-	/* (non-Javadoc)
-	 * @see dao.IDAO#update(java.lang.Object)
-	 */
+
 	@Override
 	public boolean update(T object) {
-		String sqlUpdate = getUpdateQuery(object);
-		Integer rowsUpdated = executeUpdate(sqlUpdate, object);
-		if (0 == rowsUpdated) {
-			return Boolean.FALSE;
-		}
-		return Boolean.TRUE;
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
+	public boolean delete(T object) {
+		String deleteQuery = getDeleteQuery(object);
+		boolean result = executeDeleteQuery(deleteQuery, object);
+		return result;
+	}
 	
 	/**
-	 * @param sqlUpdate
+	 * Actual deletion.
+	 * @param deleteQuery
 	 * @return
 	 */
-	private Integer executeUpdate(String sqlUpdate, T object) {
-		Integer rowsUpdated = 0;
+	private boolean executeDeleteQuery(String deleteQuery, T object) {
+		PreparedStatement deleteSQL = null;
 		try {
-			Connection connection = getDBConnection();
-			PreparedStatement statement = 
-					connection.prepareStatement(sqlUpdate);
-			setUpdateValues(connection, statement, object);
-			rowsUpdated = statement.executeUpdate();
+			Connection connection = this.getDBConnection();
+			deleteSQL = connection.prepareStatement(deleteQuery);
 			
-			statement.close();
-			connection.close();
+			setDeleteId(deleteSQL, object);
+			
+			int resultCode = deleteSQL.executeUpdate();
+//			connection.commit();
+			deleteSQL.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			// close the statement and results and connection
 		}
-		return rowsUpdated;
+		return false;
 	}
 
 	/**
-	 * This method set values for the query
-	 * @param connection
-	 * @param statement
+	 * Just needs to set an ID.
+	 * @param deleteSQL
 	 * @param object
-	 * @throws SQLException 
 	 */
-	abstract void setUpdateValues(Connection connection,
-			PreparedStatement statement, T object) throws SQLException;
+	abstract void setDeleteId(PreparedStatement deleteSQL, T object) 
+			throws SQLException;
 
 	/**
+	 * Construction of the query that deletes DB table row
 	 * @param object
 	 * @return
 	 */
-	abstract String getUpdateQuery(T object);
+	abstract String getDeleteQuery(T object);
 
-	/**
-	 * Given an id String (every implementation must know what is the id
-	 *  and how to use it) return object T.
-	 */
 	@Override
-	public T getById(String id) {
-		String sqlWhere = getWhereQuery(id);
-		T object = executeGetById(sqlWhere, id);
-		return object;
-	}
-	
-	/**
-	 * @param sqlWhere
-	 * @param id
-	 * @return
-	 */
-	private T executeGetById(String sqlWhere, String id) {
-		T result = null;
-		try {
-			Connection connection = getDBConnection();
-			PreparedStatement statement = 
-					connection.prepareStatement(sqlWhere);
-			statement.setString(1, id);
-			
-			ResultSet results = statement.executeQuery();
-			List<T> objects = createResultList(results);
-					
-			if (objects.isEmpty()) {
-				result = getDefaultObject();
-			} else {
-				result = objects.get(0);
-			}
-			
-			results.close();
-			statement.close();
-			connection.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+	public T getById(UUID id) {
+		String getById = prepareGetByIDQuery(id);
+		T result = executeGetByID(getById);
 		return result;
 	}
 
 	/**
+	 * Output string should be a full query with no parameters
 	 * @return
 	 */
-	abstract T getDefaultObject();
+	abstract String prepareGetByIDQuery(UUID id);
 
 	/**
-	 * @param id
+	 * Getting by id is pretty much the same ass getting all, just by id
+	 * there should by only one result.
+	 * 
+	 * This method cheats a bit because it takes just one result if there are 
+	 * more. But there should be no such situations.
+	 * 
+	 * @param getById
 	 * @return
 	 */
-	abstract String getWhereQuery(String id);
+	private T executeGetByID(String getById) {
+		List<T> all = executeloadAll(getById);
+		return all.get(0);
+	}
+
+	@Override
+	public List<T> loadAll() {
+		String selectAllQuery = getSelectAllQuery();
+		return executeloadAll(selectAllQuery);
+	}
+	
+	abstract String getSelectAllQuery();
 
 	/* (non-Javadoc)
 	 * @see dao.IDAO#save(java.lang.Object)
 	 */
 	@Override
 	public boolean save(T object) {
-		// prepare save query string
-		String saveQuery = prepareSaveQuery(object);
-		// execute query
-		Boolean isSaved = executeSaveQuery(saveQuery, object);
-		//return result status
+		Boolean isSaved = executeSave(
+				prepareSaveQuery(object), 
+				prepareColumnNames(), 
+				object);
+		
 		return isSaved;
 	}
 	
+	abstract String[] prepareColumnNames();
+
 	/**
+	 * This method executes the save query
 	 * @param saveQuery
-	 * @param object
 	 * @return
 	 */
-	Boolean executeSaveQuery(String saveQuery, T object){
+	private Boolean executeSave(String saveQuery, String[] columnNames, 
+			T entity) {
+		Boolean isSaved = Boolean.FALSE;
+		PreparedStatement insertSQL = null;
 		try {
-			Connection connection = getDBConnection();
-			PreparedStatement statement = 
-					connection.prepareStatement(saveQuery);
-			setValues(connection, statement, object);
-			statement.executeUpdate();
+			Connection connection = this.getDBConnection();
+			insertSQL = connection.prepareStatement(saveQuery, columnNames);
 			
-			statement.close();
-			connection.close();
+			setValues(insertSQL, entity);
+			
+			int resultCode = insertSQL.executeUpdate();
+//			connection.commit();
+			insertSQL.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			// close the statement and results and connection
 		}
-		return Boolean.TRUE;
+		return isSaved;
 	}
 
-	/**
-	 * @param statement
-	 * @param object
-	 * @throws SQLException 
-	 */
-	abstract void setValues(Connection connection, 
-			PreparedStatement statement, T object) throws SQLException;
+	abstract void setValues(PreparedStatement insertSQL, T object) 
+			throws SQLException;
 
 	/**
-	 * Gets a return SQL statement which for every entity is different,
 	 * @param object
 	 * @return
 	 */
@@ -192,7 +178,7 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 	 * @param statement
 	 * @return
 	 */
-	List<T> executeLoadAll(String query) {
+	List<T> executeloadAll(String query) {
 		List<T> resultList = null;
 		try {
 			// prepare statement object
@@ -207,6 +193,8 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			
 		}
 		
 		// check for null
@@ -223,5 +211,54 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 	 * @return
 	 */
 	abstract List<T> createResultList(ResultSet results);
+	
+
+	@Override
+	public List<T> getAllByKey(T key) {
+		
+		String query = getSelectByKeyQuery(key);
+//				"SELECT id, employee_id, registration_time, comment FROM comments ";
+//		query = query.concat(" where employee_id='49c392bc-c567-11e3-8e38-000c2969afa9'");
+		List<T> resultList = null;
+		try {
+			// prepare statement object
+			PreparedStatement stmt = getDBConnection().prepareStatement(query);
+			setGetAllByKeyQueryParameters(stmt, key);
+					//getDBConnection().createStatement();
+			// execute query
+			ResultSet results = stmt.executeQuery();
+			// build list of objects
+			resultList = createResultList(results);
+			// close result set
+			results.close();
+			// close statement object
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			
+		}
+		
+		// check for null
+		if (null == resultList) {
+			resultList = new ArrayList<T>();
+		}
+		return resultList;
+	}
+
+	/**
+	 * Every DAO must know what is its key.
+	 * @param stmt
+	 * @param key
+	 */
+	abstract void setGetAllByKeyQueryParameters(PreparedStatement stmt, T key)
+	throws SQLException;
+
+	/**
+	 * DAO implementation knows what is select by key query.
+	 * @param key
+	 * @return
+	 */
+	abstract String getSelectByKeyQuery(T key);
 
 }

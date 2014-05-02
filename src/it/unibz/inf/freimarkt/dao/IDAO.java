@@ -1,6 +1,7 @@
 package it.unibz.inf.freimarkt.dao;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This is the main interface for the data persistence layer.
@@ -42,12 +43,17 @@ public interface IDAO<T> {
 	 * @return
 	 */
 	boolean delete(T object);
-	
+
 	/**
-	 * Finds an object in the the persistence layer by a UUID.
+	 * @param key
+	 * @return
+	 */
+	List<T> getAllByKey(T key);
+
+	/**
 	 * @param id
 	 * @return
 	 */
-	T getById(String id);
+	T getById(UUID id);
 	
 }

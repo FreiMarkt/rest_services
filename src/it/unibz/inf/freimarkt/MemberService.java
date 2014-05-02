@@ -35,6 +35,12 @@ public class MemberService {
 		return Response.status(200).entity(members).build();
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response smokeTest() {
+		return Response.status(200).entity("Grumpy service").build();
+	}
+	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -49,16 +55,10 @@ public class MemberService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/getByEmail")
-	public Response getIdByEmail(JSONObject input) {
-		String email = "";
-		try {
-			email = input.getString(MemberColumns.EMAIL.getColumnName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public Response getIdByEmail(Member input) {
 		
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
-		Member member = memberDAO.getById(email);
+		List<Member> member = memberDAO.getAllByKey(input);
 		
 		return Response.status(200).entity(member).build();
 	}

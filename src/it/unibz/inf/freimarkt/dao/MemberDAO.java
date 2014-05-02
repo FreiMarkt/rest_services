@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Controller to deal with PassiveMember objects.
@@ -18,10 +19,9 @@ import java.util.List;
 public class MemberDAO extends AbstractDAO<Member> {
 
 	private final String SELECT_ALL_COLUMNS = 
-			"SELECT memberid, firstname, lastname, username,"
-			+ " ppassword, age, gender, address, city, country, email,"
-			+ " phonenumber, paymentstatus, fiftyfivemember,"
-			+ " postalcode, birthday, roleid FROM member;";
+			"SELECT memberid, firstname, lastname, ppassword, gender, address, "
+			+ "city, country, email, phonenumber, paymentstatus, "
+			+ "fiftyfivemember, postalcode, birthday, roleid FROM member";
 	
 	private final String INSERT_TO_ALL =
 			"INSERT INTO member(memberid, firstname, lastname, username, "
@@ -68,14 +68,6 @@ public class MemberDAO extends AbstractDAO<Member> {
 	}
 
 	/* (non-Javadoc)
-	 * @see dao.IDAO#loadAll()
-	 */
-	@Override
-	public List<Member> loadAll() {
-		return executeLoadAll(SELECT_ALL_COLUMNS);
-	}
-
-	/* (non-Javadoc)
 	 * @see dao.AbstractDAO#createResultList(java.sql.ResultSet)
 	 */
 	@Override
@@ -92,9 +84,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 				member.setMemberID(results.getString("memberid")); 
 				member.setFirstname(results.getString("firstname"));
 				member.setLastname(results.getString("lastname"));
-				member.setUsername(results.getString("username"));
 				member.setPpassword(results.getString("ppassword"));
-				member.setAge(results.getInt("age"));
 				member.setGender(results.getBoolean("gender"));
 				member.setAddress(results.getString("address"));
 				member.setCity(results.getString("city"));
@@ -124,64 +114,78 @@ public class MemberDAO extends AbstractDAO<Member> {
 		return this.INSERT_TO_ALL;
 	}
 
-
 	/* (non-Javadoc)
-	 * @see dao.AbstractDAO#setValues(java.sql.PreparedStatement, java.lang.Object)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#setDeleteId(java.sql.PreparedStatement, java.lang.Object)
 	 */
 	@Override
-	void setValues(Connection connection, PreparedStatement statement, 
-			Member member) throws SQLException {
-		statement.setArray(1, connection.createArrayOf("varchar", new String[]{member.getMemberID()}));
-		statement.setArray(2, connection.createArrayOf("varchar", new String[]{member.getFirstname()}));
-		statement.setArray(3, connection.createArrayOf("varchar", new String[]{member.getLastname()}));
-		statement.setArray(4, connection.createArrayOf("varchar", new String[]{member.getUsername()}));
-		statement.setArray(5, connection.createArrayOf("varchar", new String[]{member.getPpassword()}));
-		statement.setInt(6, member.getAge());
-		statement.setBoolean(7, member.isGender());
-		statement.setString(8, member.getAddress());
-		statement.setArray(9, connection.createArrayOf("varchar", new String[]{member.getCity()}));
-		statement.setArray(10, connection.createArrayOf("varchar", new String[]{member.getCountry()}));
-		statement.setArray(11, connection.createArrayOf("varchar", new String[]{member.getEmail()}));
-		statement.setArray(12, connection.createArrayOf("varchar", new String[]{member.getPhonenumber()}));
-		statement.setBoolean(13, member.isPaymentStatus());
-		statement.setBoolean(14, member.isFiftyfivemember());
-		statement.setArray(15, connection.createArrayOf("varchar", new String[]{member.getPostalcode()}));
-		statement.setDate(16, member.getBirthday());
-		statement.setInt(17, member.getRoleId());
+	void setDeleteId(PreparedStatement deleteSQL, Member object)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/* (non-Javadoc)
-	 * @see dao.AbstractDAO#getWhereQuery(java.lang.String)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#getDeleteQuery(java.lang.Object)
 	 */
 	@Override
-	String getWhereQuery(String id) {
-		return this.GET_MEMBER_BY_EMAIL;
+	String getDeleteQuery(Member object) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/* (non-Javadoc)
-	 * @see dao.AbstractDAO#getDefaultObject()
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#prepareGetByIDQuery(java.util.UUID)
 	 */
 	@Override
-	Member getDefaultObject() {
-		return Member.getInstance();
+	String prepareGetByIDQuery(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/* (non-Javadoc)
-	 * @see dao.AbstractDAO#getUpdateQuery(java.lang.Object)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#getSelectAllQuery()
 	 */
 	@Override
-	String getUpdateQuery(Member object) {
-		return UPDATE_EMAIL;
+	String getSelectAllQuery() {
+		return this.SELECT_ALL_COLUMNS.concat(";");
 	}
 
 	/* (non-Javadoc)
-	 * @see dao.AbstractDAO#setUpdateValues(java.sql.Connection, java.sql.PreparedStatement, java.lang.Object)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#prepareColumnNames()
 	 */
 	@Override
-	void setUpdateValues(Connection connection, PreparedStatement statement,
-			Member member) throws SQLException {
-		// TODO (Dainius): this is just a one pair of possible updates
-		statement.setArray(1, connection.createArrayOf("varchar", new String[]{member.getEmail()}));
-		statement.setArray(2, connection.createArrayOf("varchar", new String[]{member.getMemberID()}));		
+	String[] prepareColumnNames() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#setValues(java.sql.PreparedStatement, java.lang.Object)
+	 */
+	@Override
+	void setValues(PreparedStatement insertSQL, Member object)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#setGetAllByKeyQueryParameters(java.sql.PreparedStatement, java.lang.Object)
+	 */
+	@Override
+	void setGetAllByKeyQueryParameters(PreparedStatement stmt, Member key)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#getSelectByKeyQuery(java.lang.Object)
+	 */
+	@Override
+	String getSelectByKeyQuery(Member key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
