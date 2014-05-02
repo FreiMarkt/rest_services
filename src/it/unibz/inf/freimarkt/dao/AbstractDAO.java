@@ -152,8 +152,7 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 			
 			setValues(insertSQL, entity);
 			
-			int resultCode = insertSQL.executeUpdate();
-//			connection.commit();
+			insertSQL.executeUpdate();
 			insertSQL.close();
 		} catch (Exception e) {
 			e.printStackTrace();

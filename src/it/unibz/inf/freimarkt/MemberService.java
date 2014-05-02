@@ -89,7 +89,7 @@ public class MemberService {
 		
 		// prepare the object to send DAO update method
 		Member tempMember = Member.getInstance();
-		tempMember.setMemberID(id);
+		tempMember.setMemberid(id);
 		tempMember.setEmail(email);
 		
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
@@ -126,7 +126,7 @@ public class MemberService {
 		
 		// prepare the object to send DAO update method
 		Member tempMember = Member.getInstance();
-		tempMember.setMemberID(id);
+		tempMember.setMemberid(id);
 		tempMember.setEmail(email);
 		
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();

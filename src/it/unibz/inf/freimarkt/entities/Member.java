@@ -41,7 +41,7 @@ public class Member implements IItem {
 	private String username;
 	private String ppassword;
 	private int age;
-	private boolean gender;
+	private String gender;
 	private String address;
 	private String city;
 	private String country;
@@ -83,13 +83,13 @@ public class Member implements IItem {
 	/**
 	 * @return the memberID
 	 */
-	public String getMemberID() {
+	public String getMemberid() {
 		return memberid;
 	}
 	/**
 	 * @param memberID the memberID to set
 	 */
-	public void setMemberID(String memberID) {
+	public void setMemberid(String memberID) {
 		this.memberid = memberID;
 	}
 	/**
@@ -143,13 +143,13 @@ public class Member implements IItem {
 	/**
 	 * @return the gender
 	 */
-	public boolean isGender() {
+	public String getGender() {
 		return gender;
 	}
 	/**
 	 * @param gender the gender to set
 	 */
-	public void setGender(boolean gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 	/**

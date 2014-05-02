@@ -24,11 +24,11 @@ public class MemberDAO extends AbstractDAO<Member> {
 			+ "fiftyfivemember, postalcode, birthday, roleid FROM member";
 	
 	private final String INSERT_TO_ALL =
-			"INSERT INTO member(memberid, firstname, lastname, username, "
-			+ "ppassword, age, gender, address, city, country, email, "
-			+ "phonenumber, paymentstatus, fiftyfivemember, postalcode, "
-			+ "birthday, roleid) "
-			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			"INSERT INTO member(firstname, lastname, ppassword, gender, "
+			+ "address, city, country, email, phonenumber, postalcode, "
+			+ "birthday) VALUES (?, ?, ?, ?, "
+			+ "?, ?, ?, ?, "
+			+ "?, ?, ?);";
 	
 	private final String GET_MEMBER_BY_EMAIL =
 			"SELECT memberid, firstname, lastname, username,"
@@ -81,11 +81,10 @@ public class MemberDAO extends AbstractDAO<Member> {
 			while (results.next()) {
 				Member member = Member.getInstance();
 				
-				member.setMemberID(results.getString("memberid")); 
+				member.setMemberid(results.getString("memberid")); 
 				member.setFirstname(results.getString("firstname"));
 				member.setLastname(results.getString("lastname"));
 				member.setPpassword(results.getString("ppassword"));
-				member.setGender(results.getBoolean("gender"));
 				member.setAddress(results.getString("address"));
 				member.setCity(results.getString("city"));
 				member.setCountry(results.getString("country"));
@@ -155,18 +154,29 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	String[] prepareColumnNames() {
-		// TODO Auto-generated method stub
-		return null;
+		String[] columnNames = {"firstname", "lastname", "ppassword", "gender",
+				"address", "city", "country", "email", "phonenumber", "postalcode",
+				"birthday"};
+		return columnNames;
 	}
 
 	/* (non-Javadoc)
 	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#setValues(java.sql.PreparedStatement, java.lang.Object)
 	 */
 	@Override
-	void setValues(PreparedStatement insertSQL, Member object)
+	void setValues(PreparedStatement insertSQL, Member member)
 			throws SQLException {
-		// TODO Auto-generated method stub
-		
+		insertSQL.setString(1, member.getFirstname());
+		insertSQL.setString(2, member.getLastname());
+		insertSQL.setString(3, member.getPpassword());
+		insertSQL.setString(4, member.getGender());
+		insertSQL.setString(5, member.getAddress());
+		insertSQL.setString(6, member.getCity());
+		insertSQL.setString(7, member.getCountry());
+		insertSQL.setString(8, member.getEmail());
+		insertSQL.setString(9, member.getPhonenumber());
+		insertSQL.setString(10, member.getPostalcode());
+		insertSQL.setDate(11, member.getBirthday());
 	}
 
 	/* (non-Javadoc)

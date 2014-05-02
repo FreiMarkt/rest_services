@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="US-ASCII">
+<title>Member service demo page</title>
+  <script src="js/saveMember.js"></script>
+  <script>
+    function saveFictitiousMember() {
+      var member = {
+        "firstname": "test",
+        "lastname" : "test", 
+        "ppassword" : "test", 
+        "gender" : "test",
+        "address" : "test", 
+        "city" : "test", 
+        "country" : "test", 
+        "email" : "test", 
+        "phonenumber" : "test", 
+        "postalcode" : "test",
+		"birthday" : '1989-04-11' 
+      }
+      
+      return saveMember(member);
+    }
+  </script>
+</head>
+<body>
+  <h1>This is a member service demo page.</h1>
+  <button onclick="saveFictitiousMember()">InsertMember</button>
+</body>
+</html>
