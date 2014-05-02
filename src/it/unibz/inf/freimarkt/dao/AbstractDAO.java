@@ -213,31 +213,20 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 
 	@Override
 	public List<T> getAllByKey(T key) {
-		
 		String query = getSelectByKeyQuery(key);
-//				"SELECT id, employee_id, registration_time, comment FROM comments ";
-//		query = query.concat(" where employee_id='49c392bc-c567-11e3-8e38-000c2969afa9'");
 		List<T> resultList = null;
 		try {
-			// prepare statement object
 			PreparedStatement stmt = getDBConnection().prepareStatement(query);
 			setGetAllByKeyQueryParameters(stmt, key);
-					//getDBConnection().createStatement();
-			// execute query
 			ResultSet results = stmt.executeQuery();
-			// build list of objects
+			// build list of objects found by key
 			resultList = createResultList(results);
-			// close result set
 			results.close();
-			// close statement object
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			
 		}
-		
-		// check for null
+		// check for null, just in case if nothing was selected
 		if (null == resultList) {
 			resultList = new ArrayList<T>();
 		}

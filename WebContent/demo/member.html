@@ -5,6 +5,7 @@
 <title>Member service demo page</title>
   <script src="js/saveMember.js"></script>
   <script src="js/deleteMember.js"></script>
+  <script src="js/loginMember.js"></script>
   <script>
     function saveFictitiousMember() {
       var member = {
@@ -31,11 +32,21 @@
       
       return deleteMember(member);
     }
+    
+    function loginWithMember() {
+      var member = {
+        "email" : "default@default",
+        "ppassword" : "default"
+      };
+      
+      alert(loginMember(member));
+    }
   </script>
 </head>
 <body>
   <h1>This is a member service demo page.</h1>
   <button onclick="saveFictitiousMember()">InsertMember</button>
   <button onclick="deleteSomeMember()">Delete Member</button>
+  <button onclick="loginWithMember()">Login</button>
 </body>
 </html>

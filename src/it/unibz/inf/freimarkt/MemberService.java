@@ -64,6 +64,22 @@ public class MemberService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/login")
+	public Response loginMember(Member m) {	
+		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
+		List<Member> members = memberDAO.getAllByKey(m);
+		boolean isLoggedIn;
+		if (1 == members.size()) {
+			isLoggedIn = true;
+		} else {
+			isLoggedIn = false;
+		}
+		return Response.status(200).entity(isLoggedIn).build();
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/getByEmail")
 	public Response getIdByEmail(Member input) {
 		

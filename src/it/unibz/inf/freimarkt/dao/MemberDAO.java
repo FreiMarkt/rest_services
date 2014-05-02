@@ -30,6 +30,8 @@ public class MemberDAO extends AbstractDAO<Member> {
 			+ "?, ?, ?, ?, "
 			+ "?, ?, ?);";
 	
+	private String LOGIN_CLAUSE = " WHERE ppassword=? and email=?";
+	
 	private final String GET_MEMBER_BY_EMAIL =
 			"SELECT memberid, firstname, lastname, username,"
 			+ " ppassword, age, gender, address, city, country, email,"
@@ -173,8 +175,8 @@ public class MemberDAO extends AbstractDAO<Member> {
 	@Override
 	void setGetAllByKeyQueryParameters(PreparedStatement stmt, Member key)
 			throws SQLException {
-		// TODO Auto-generated method stub
-		
+		stmt.setString(1, key.getPpassword());
+		stmt.setString(2, key.getEmail());
 	}
 
 	/* (non-Javadoc)
@@ -182,8 +184,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	String getSelectByKeyQuery(Member key) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.SELECT_ALL_COLUMNS.concat(this.LOGIN_CLAUSE).concat(";");
 	}
 
 }
