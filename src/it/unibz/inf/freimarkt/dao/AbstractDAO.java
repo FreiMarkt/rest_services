@@ -60,8 +60,7 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 			
 			setDeleteId(deleteSQL, object);
 			
-			int resultCode = deleteSQL.executeUpdate();
-//			connection.commit();
+			deleteSQL.executeUpdate();
 			deleteSQL.close();
 		} catch (Exception e) {
 			e.printStackTrace();

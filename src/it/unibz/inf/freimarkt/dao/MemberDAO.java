@@ -39,7 +39,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 	private final String UPDATE_EMAIL = "UPDATE member SET email=? WHERE memberid=?;";
 	
 	private final String DELETE_MEMBER_BY_ID = 
-			"delete from member where memberid[1]=?;";
+			"delete from member where memberid=?;";
 			
 	/**
 	 * Inherited constructor.
@@ -55,16 +55,6 @@ public class MemberDAO extends AbstractDAO<Member> {
 	public static MemberDAO getInstance(
 			IDBConnectionPool dbConnectionPool) {
 		return new MemberDAO(dbConnectionPool);
-	}
-	
-
-	/* (non-Javadoc)
-	 * @see dao.IDAO#delete(java.lang.Object)
-	 */
-	@Override
-	public boolean delete(Member object) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	/* (non-Javadoc)
@@ -119,8 +109,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 	@Override
 	void setDeleteId(PreparedStatement deleteSQL, Member object)
 			throws SQLException {
-		// TODO Auto-generated method stub
-		
+		deleteSQL.setObject(1, UUID.fromString(object.getMemberid()));
 	}
 
 	/* (non-Javadoc)
@@ -128,8 +117,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	String getDeleteQuery(Member object) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.DELETE_MEMBER_BY_ID;
 	}
 
 	/* (non-Javadoc)

@@ -54,6 +54,16 @@ public class MemberService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/delete")
+	public Response deleteMember(Member m) {	
+		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
+		memberDAO.delete(m);
+		return Response.status(200).entity(m).build();
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/getByEmail")
 	public Response getIdByEmail(Member input) {
 		
