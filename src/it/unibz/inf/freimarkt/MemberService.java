@@ -5,8 +5,8 @@ import it.unibz.inf.freimarkt.dao.IDAO;
 import it.unibz.inf.freimarkt.entities.Member;
 import it.unibz.inf.freimarkt.entities.MemberColumns;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -82,9 +82,11 @@ public class MemberService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/getByKey")
 	public Response getMemberByKey(Member m) {	
-		String tempEmail = m.getEmail();
-		tempEmail =  tempEmail.replace("%40", "@");
-		m.setEmail(tempEmail); 
+		if (null != m.getEmail()) {
+			String tempEmail = m.getEmail();
+			tempEmail =  tempEmail.replace("%40", "@");
+			m.setEmail(tempEmail);
+		}
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
 		List<Member> members = memberDAO.getAllByKey(m);
 		
@@ -146,32 +148,14 @@ public class MemberService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/updateMember")
-	public Response updateMember(JSONObject input) {
-		List<MemberColumns> columnsToUpdate = new ArrayList<MemberColumns>();
-		String id = "";
-		String email = "";
-		try {
-			for (MemberColumns column : MemberColumns.values()) {
-				if (input.has(column.getColumnName())) {
-					columnsToUpdate.add(column);
-				}
-			}
-			
-			id = input.getString(MemberColumns.ID.getColumnName());
-			email = input.getString(MemberColumns.EMAIL.getColumnName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		// prepare the object to send DAO update method
-		Member tempMember = Member.getInstance();
-		tempMember.setMemberid(id);
-		tempMember.setEmail(email);
-		
+	public Response updateMember(Member input) {
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
-		Boolean result = memberDAO.update(tempMember);
-		
-		return Response.status(200).entity(result).build();
+		Member tempMember = 
+				memberDAO.getById(UUID.fromString(input.getMemberid()));
+		// TODO refresh field values.
+		memberDAO.delete(tempMember);
+		memberDAO.save(input);
+		return Response.status(200).entity(input).build();
 	}
 
 }
