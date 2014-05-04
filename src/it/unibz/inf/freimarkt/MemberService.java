@@ -80,6 +80,17 @@ public class MemberService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/getByKey")
+	public Response getMemberByKey(Member m) {	
+		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
+		List<Member> members = memberDAO.getAllByKey(m);
+		
+		return Response.status(200).entity(members.get(0)).build();
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/getByEmail")
 	public Response getIdByEmail(Member input) {
 		
