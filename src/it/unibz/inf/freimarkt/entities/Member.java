@@ -38,7 +38,6 @@ public class Member implements IItem {
 	private String memberid;
 	private String firstname;
 	private String lastname;
-	private String username;
 	private String ppassword;
 	private int age;
 	private String gender;
@@ -53,13 +52,6 @@ public class Member implements IItem {
 	private Date birthday;
 	private int roleId;
 	
-	public void setUsername(String userName) {
-		this.username = userName;
-	}
-	
-	public String getUsername() {
-		return this.username;
-	}
 	/**
 	 * Private constructor
 	 */
@@ -78,7 +70,7 @@ public class Member implements IItem {
 	 * string representation of the object
 	 */
 	public String toString() {
-		return this.memberid + "  " + this.username;
+		return this.memberid + "  " + this.email;
 	}
 	/**
 	 * @return the memberID
