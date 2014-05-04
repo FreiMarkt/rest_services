@@ -82,6 +82,9 @@ public class MemberService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/getByKey")
 	public Response getMemberByKey(Member m) {	
+		String tempEmail = m.getEmail();
+		tempEmail =  tempEmail.replace("%40", "@");
+		m.setEmail(tempEmail); 
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
 		List<Member> members = memberDAO.getAllByKey(m);
 		
@@ -93,7 +96,6 @@ public class MemberService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/getByEmail")
 	public Response getIdByEmail(Member input) {
-		
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
 		List<Member> member = memberDAO.getAllByKey(input);
 		
