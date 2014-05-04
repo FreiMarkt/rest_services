@@ -23,6 +23,8 @@ public class MemberDAO extends AbstractDAO<Member> {
 			+ "city, country, email, phonenumber, paymentstatus, "
 			+ "fiftyfivemember, postalcode, birthday, roleid FROM member";
 	
+	private String WHERE_BY_ID = " WHERE memberid=?";
+	
 	private final String INSERT_TO_ALL =
 			"INSERT INTO member(firstname, lastname, ppassword, gender, "
 			+ "address, city, country, email, phonenumber, postalcode, "
@@ -127,8 +129,12 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	String prepareGetByIDQuery(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.SELECT_ALL_COLUMNS.
+				concat(" WHERE memberid=").
+				concat("'").
+				concat(id.toString()).
+				concat("'").
+				concat(";");
 	}
 
 	/* (non-Javadoc)
@@ -175,8 +181,12 @@ public class MemberDAO extends AbstractDAO<Member> {
 	@Override
 	void setGetAllByKeyQueryParameters(PreparedStatement stmt, Member key)
 			throws SQLException {
-		stmt.setString(1, key.getPpassword());
-		stmt.setString(2, key.getEmail());
+		if (null != key.getMemberid()) {
+			stmt.setObject(1, UUID.fromString(key.getMemberid()));
+		} else {
+			stmt.setString(1, key.getPpassword());
+			stmt.setString(2, key.getEmail());
+		}
 	}
 
 	/* (non-Javadoc)
@@ -184,6 +194,9 @@ public class MemberDAO extends AbstractDAO<Member> {
 	 */
 	@Override
 	String getSelectByKeyQuery(Member key) {
+		if (null != key.getMemberid()) {
+			return this.SELECT_ALL_COLUMNS.concat(this.WHERE_BY_ID).concat(";");
+		}
 		return this.SELECT_ALL_COLUMNS.concat(this.LOGIN_CLAUSE).concat(";");
 	}
 

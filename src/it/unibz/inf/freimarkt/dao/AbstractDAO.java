@@ -88,6 +88,7 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 	@Override
 	public T getById(UUID id) {
 		String getById = prepareGetByIDQuery(id);
+		System.out.println(getById);
 		T result = executeGetByID(getById);
 		return result;
 	}
