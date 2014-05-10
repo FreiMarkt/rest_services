@@ -1,7 +1,6 @@
 package it.unibz.inf.freimarkt.entities;
 
 import java.sql.Date;
-import java.util.UUID;
 
 /**
  * This class acts as a wrapper of the devices table in the application server.
@@ -23,21 +22,32 @@ public class Device {
 	/*
 	 * Private fields
 	 */
-	private UUID deviceid;
+	private String deviceid; // string representation of UUID for simplicity
 	private Date inserttime;
 	private String deviceregistrationid;
 	private boolean isactive;
 	
+	/*
+	 * Private constructor
+	 */
+	private Device() {}
+	/**
+	 * Static factory method that creates a new instance 
+	 * @return
+	 */
+	public static Device newInstance() {
+		return new Device();
+	}
 	/**
 	 * @return the deviceid
 	 */
-	public UUID getDeviceid() {
+	public String getDeviceid() {
 		return deviceid;
 	}
 	/**
 	 * @param deviceid the deviceid to set
 	 */
-	public void setDeviceid(UUID deviceid) {
+	public void setDeviceid(String deviceid) {
 		this.deviceid = deviceid;
 	}
 	/**
