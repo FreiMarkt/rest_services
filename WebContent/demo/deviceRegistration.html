@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="US-ASCII">
+<title>Insert title here</title>
+  <script type="application/javascript">
+    function registerDevice() {
+      var deviceId = "this is a device id";
+      var request = new XMLHttpRequest();
+      request.open("POST", "/rest_services/r/device/register", false);
+      request.setRequestHeader("Content-type","application/json");
+      request.send(deviceId);
+   	  return JSON.parse(request.responseText);
+    }
+  </script>
+</head>
+<body>
+  <h2>Device registration demo:</h2>
+  <button id="registrationButton" onclick="registerDevice()">Register device</button>
+</body>
+</html>
