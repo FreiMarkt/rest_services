@@ -2,6 +2,7 @@ package it.unibz.inf.freimarkt.dao;
 
 import it.unibz.inf.freimarkt.dao.dbController.DBConnectionPoolFactory;
 import it.unibz.inf.freimarkt.dao.dbController.IDBConnectionPool;
+import it.unibz.inf.freimarkt.entities.Device;
 import it.unibz.inf.freimarkt.entities.Member;
 
 /**
@@ -21,6 +22,15 @@ public class DAOFactory {
 		
 		// create instance of PassiveMemberDAO with a specified DBConnectionPool
 		return MemberDAO.getInstance(dbConnectionPool);
+	}
+
+	/**
+	 * @return
+	 */
+	public static IDAO<Device> createDeviceDAO() {
+		// there might be different implementations of DBConnectionPool but we need one now
+		IDBConnectionPool dbConnectionPool = DBConnectionPoolFactory.create();
+		return DevicesDAO.getInstance(dbConnectionPool);
 	}
 
 }
