@@ -3,6 +3,7 @@ package it.unibz.inf.freimarkt;
 import it.unibz.inf.freimarkt.dao.DAOFactory;
 import it.unibz.inf.freimarkt.dao.IDAO;
 import it.unibz.inf.freimarkt.entities.Device;
+import it.unibz.inf.freimarkt.gcmConnector.GCMConnector;
 
 import java.util.List;
 
@@ -50,6 +51,17 @@ public class DeviceRegistration {
 		List<Device> devices = deviceDAO.loadAll();
 		return Response.status(200).entity(devices).build();
 	}
+
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/sendMessage")
+	public Response sendMessage() {
+		GCMConnector conn = GCMConnector.newInstance();
+		conn.method();
+		return Response.status(200).entity("done").build();
+	}
+
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

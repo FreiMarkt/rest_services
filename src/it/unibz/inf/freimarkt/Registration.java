@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 /**
  * This class stands for REST service that takes in some parameters.
- * 
+ * GOOGLE: AIzaSyDbPycn3WV-JHbWOhcIdPKQapl-ef5yxdc
  * @author Dainius Jocas
  *
  */
