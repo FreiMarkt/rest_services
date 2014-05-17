@@ -33,7 +33,6 @@ public class DeviceRegistration {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/register")
 	public Response saveMember(String deviceId) {
-		System.out.println(deviceId);
 		IDAO<Device> deviceDAO = DAOFactory.createDeviceDAO();
 		
 		Device device = Device.newInstance();

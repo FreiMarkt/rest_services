@@ -4,6 +4,7 @@ import it.unibz.inf.freimarkt.dao.DAOFactory;
 import it.unibz.inf.freimarkt.dao.IDAO;
 import it.unibz.inf.freimarkt.entities.Member;
 import it.unibz.inf.freimarkt.entities.MemberColumns;
+import it.unibz.inf.freimarkt.utilities.SecurityCodeGenerator;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,6 +49,16 @@ public class MemberService {
 	public Response saveMember(Member m) {	
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
 		memberDAO.save(m);
+		
+		SecurityCodeGenerator securityCodeGenerator = 
+				SecurityCodeGenerator.newInstance();
+		String securityCode = securityCodeGenerator.generateSecurityCode();
+	
+		// unfortunately this code can work only in the server that has an outgoing connection enabled
+//		// send SMS confirmation code
+//		GCMConnector conn = GCMConnector.newInstance();
+//		conn.method(m.getPhonenumber(), securityCode);
+		
 		return Response.status(200).entity(m).build();
 	}
 	

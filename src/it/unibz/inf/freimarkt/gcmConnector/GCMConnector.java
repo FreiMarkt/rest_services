@@ -48,7 +48,7 @@ public class GCMConnector {
 	
 	public void method() {
 		Sender sender = new Sender("AIzaSyDbPycn3WV-JHbWOhcIdPKQapl-ef5yxdc");
-		Message message = new Message.Builder().delayWhileIdle(true)
+		Message message = new Message.Builder().delayWhileIdle(false)
 				.addData("message", "timebank")
 				.addData("phoneNumber", "+37068600597")
 				.addData("securityCode", "1234")

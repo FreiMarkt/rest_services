@@ -27,14 +27,20 @@ public class RecoveryService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/recoverPassword")
 	public Response recoverPassword(JSONObject object) {
+		boolean isRecoveryMessageSent = false;
 		try {
-			System.out.println(object.getString("email"));
-			System.out.println(object.getString("phoneNumber"));
+			String email = object.getString("email");
+			String phoneNumber = object.getString("phoneNumber");
+			if ("" == phoneNumber) {
+				// send email
+			} else {
+				//send SMS
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return Response.status(200).entity(true).build();
+		return Response.status(200).entity(isRecoveryMessageSent).build();
 	}
 	
 	@GET
