@@ -1,5 +1,7 @@
 package it.unibz.inf.freimarkt;
 
+import it.unibz.inf.freimarkt.dao.DAOFactory;
+import it.unibz.inf.freimarkt.dao.IDAO;
 import it.unibz.inf.freimarkt.entities.OfferObject;
 
 import java.util.ArrayList;
@@ -26,7 +28,8 @@ public class OfferService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/makeOffer")
 	public Response makeOffer(OfferObject offerObject) {
-		// TODO(dainius): implementation
+		IDAO<OfferObject> offerDAO = DAOFactory.createOfferDAO();
+		boolean isSaved = offerDAO.save(offerObject);
 		return Response.status(200).entity("true").build();
 	}
 

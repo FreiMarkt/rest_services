@@ -4,6 +4,7 @@ import it.unibz.inf.freimarkt.dao.dbController.DBConnectionPoolFactory;
 import it.unibz.inf.freimarkt.dao.dbController.IDBConnectionPool;
 import it.unibz.inf.freimarkt.entities.Device;
 import it.unibz.inf.freimarkt.entities.Member;
+import it.unibz.inf.freimarkt.entities.OfferObject;
 
 /**
  * Factory class that knows how to create IDAO implementation objects.
@@ -31,6 +32,14 @@ public class DAOFactory {
 		// there might be different implementations of DBConnectionPool but we need one now
 		IDBConnectionPool dbConnectionPool = DBConnectionPoolFactory.create();
 		return DevicesDAO.getInstance(dbConnectionPool);
+	}
+
+	/**
+	 * @return
+	 */
+	public static IDAO<OfferObject> createOfferDAO() {
+		IDBConnectionPool dbConnectionPool = DBConnectionPoolFactory.create();
+		return OfferDAO.newInstance(dbConnectionPool);
 	}
 
 }
