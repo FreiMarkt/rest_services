@@ -23,6 +23,16 @@ import javax.ws.rs.core.Response;
 @Path("/offer")
 public class OfferService {
 	
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getAllOffers")
+	public Response getAllOffers() {
+		IDAO<OfferObject> offerDAO = DAOFactory.createOfferDAO();
+		List<OfferObject> offers = offerDAO.loadAll();
+		return Response.status(200).entity(offers).build();
+	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -45,6 +55,7 @@ public class OfferService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listServices() {
 		List<String> services = new ArrayList<String>();
+		services.add("/getAllOffers");
 		services.add("/makeOffer");
 		services.add("/getEmptyOffer");
 		return Response.status(200).entity(services).build();
