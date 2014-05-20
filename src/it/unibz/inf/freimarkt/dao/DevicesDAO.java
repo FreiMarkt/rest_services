@@ -142,4 +142,22 @@ public class DevicesDAO extends AbstractDAO<Device> implements IDAO<Device> {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#setUpdateValues(java.sql.PreparedStatement, java.lang.Object)
+	 */
+	@Override
+	void setUpdateValues(PreparedStatement insertSQL, Device object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#getUpdateSQL()
+	 */
+	@Override
+	String getUpdateSQL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
