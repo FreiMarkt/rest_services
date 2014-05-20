@@ -107,6 +107,16 @@ public class MemberService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/getById")
+	public Response getMemberById(Member m) {	
+		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
+		Member member = memberDAO.getById(UUID.fromString(m.getMemberid()));
+		return Response.status(200).entity(member).build();
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/getByEmail")
 	public Response getIdByEmail(Member input) {
 		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
@@ -167,6 +177,29 @@ public class MemberService {
 		memberDAO.delete(tempMember);
 		memberDAO.save(input);
 		return Response.status(200).entity(input).build();
+	}
+	
+	/**
+	 * This service updates MEMBER entry.
+	 * JSON input can contain many fields that are going to be updated
+	 * @param input
+	 * @return
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/realUpdate")
+	public Response realUpdate(Member input) {
+		IDAO<Member> memberDAO = DAOFactory.createMemberDAO();
+		boolean isUpdated = memberDAO.update(input);
+		return Response.status(200).entity(isUpdated).build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getEmptyMember")
+	public Response getEmptyMember() {
+		return Response.status(200).entity(Member.getInstance()).build();
 	}
 
 }

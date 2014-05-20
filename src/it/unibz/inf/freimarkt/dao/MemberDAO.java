@@ -34,17 +34,35 @@ public class MemberDAO extends AbstractDAO<Member> {
 	
 	private String LOGIN_CLAUSE = " WHERE ppassword=? and email=?";
 	
-	private final String GET_MEMBER_BY_EMAIL =
-			"SELECT memberid, firstname, lastname, username,"
-			+ " ppassword, age, gender, address, city, country, email,"
-			+ " phonenumber, paymentstatus, fiftyfivemember,"
-			+ " postalcode, birthday, roleid FROM member WHERE email[1]=?;";
-	
 	private final String UPDATE_EMAIL = "UPDATE member SET email=? WHERE memberid=?;";
+	
+	
+	private final String UPDATE = 
+			"UPDATE member SET firstname=?"
+			+ ", lastname=?"
+			+ ", birthday=?"
+			+ ", gender=?"
+			+ ", phonenumber=?"
+			+ ", address=?"
+			+ " WHERE memberid=?;";
 	
 	private final String DELETE_MEMBER_BY_ID = 
 			"delete from member where memberid=?;";
 			
+
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#setUpdateValues(java.sql.PreparedStatement, java.lang.Object)
+	 */
+	@Override
+	void setUpdateValues(PreparedStatement updateSQL, Member member) throws SQLException {
+		updateSQL.setString(1, member.getFirstname());
+		updateSQL.setString(2, member.getLastname());
+		updateSQL.setDate(3, member.getBirthday());
+		updateSQL.setString(4, member.getGender());
+		updateSQL.setString(5, member.getPhonenumber());
+		updateSQL.setString(6, member.getAddress());
+		updateSQL.setObject(7, UUID.fromString(member.getMemberid()));
+	}
 	/**
 	 * Inherited constructor.
 	 * @param dbConnectionPool
@@ -81,6 +99,7 @@ public class MemberDAO extends AbstractDAO<Member> {
 				member.setPpassword(results.getString("ppassword"));
 				member.setAddress(results.getString("address"));
 				member.setCity(results.getString("city"));
+				member.setGender(results.getString("gender"));
 				member.setCountry(results.getString("country"));
 				member.setEmail(results.getString("email"));
 				member.setPhonenumber(results.getString("phonenumber"));
@@ -198,6 +217,14 @@ public class MemberDAO extends AbstractDAO<Member> {
 			return this.SELECT_ALL_COLUMNS.concat(this.WHERE_BY_ID).concat(";");
 		}
 		return this.SELECT_ALL_COLUMNS.concat(this.LOGIN_CLAUSE).concat(";");
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#getUpdateSQL()
+	 */
+	@Override
+	String getUpdateSQL() {
+		return this.UPDATE;
 	}
 
 }

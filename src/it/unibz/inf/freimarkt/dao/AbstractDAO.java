@@ -37,10 +37,46 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 
 	@Override
 	public boolean update(T object) {
-		// TODO Auto-generated method stub
-		return false;
+		String updateSQL = getUpdateSQL();
+		boolean isUpdated = executeUpdate(updateSQL, object);
+		return isUpdated;
 	}
 	
+	/**
+	 * @param updateQuery
+	 * @param object
+	 * @return
+	 */
+	private boolean executeUpdate(String updateQuery, T object) {
+		Boolean isUpdated = Boolean.FALSE;
+		PreparedStatement updateSQL = null;
+		try {
+			Connection connection = this.getDBConnection();
+			updateSQL = connection.prepareStatement(updateQuery);
+			
+			setUpdateValues(updateSQL, object);
+			updateSQL.executeUpdate();
+			updateSQL.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// close the statement and results and connection
+		}
+		return isUpdated;
+	}
+
+	/**
+	 * @param insertSQL
+	 * @param object
+	 * @throws SQLException 
+	 */
+	abstract void setUpdateValues(PreparedStatement insertSQL, T object) throws SQLException;
+
+	/**
+	 * @return
+	 */
+	abstract String getUpdateSQL();
+
 	public boolean delete(T object) {
 		String deleteQuery = getDeleteQuery(object);
 		boolean result = executeDeleteQuery(deleteQuery, object);
@@ -88,7 +124,6 @@ abstract class AbstractDAO<T> implements IDAO<T> {
 	@Override
 	public T getById(UUID id) {
 		String getById = prepareGetByIDQuery(id);
-		System.out.println(getById);
 		T result = executeGetByID(getById);
 		return result;
 	}

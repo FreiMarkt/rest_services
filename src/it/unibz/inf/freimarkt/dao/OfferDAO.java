@@ -156,4 +156,22 @@ public class OfferDAO extends AbstractDAO<OfferObject> implements IDAO<OfferObje
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#setUpdateValues(java.sql.PreparedStatement, java.lang.Object)
+	 */
+	@Override
+	void setUpdateValues(PreparedStatement insertSQL, OfferObject object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unibz.inf.freimarkt.dao.AbstractDAO#getUpdateSQL()
+	 */
+	@Override
+	String getUpdateSQL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
